@@ -94,7 +94,9 @@ La muerte del pop
     "audio/audio5.mp3",
     "audio/audio6.mp3",
     "audio/audio7.mp3",
-    "audio/audio8.mp3"
+    "audio/audio8.mp3",
+    "audio/audio9.mp3",
+    "audio/audio10.mp3"
   ];
 
   let currentAudio = new Audio();

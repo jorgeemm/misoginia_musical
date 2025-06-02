@@ -20,17 +20,17 @@ website:
       - section: "Cola de reproducción"
         contents:
           - title: "Misoginia en la música"
-            href: index.qmd
+            href: 3_web_misoginia_musical/index.qmd
           - title: "¿En qué es misógina la música?"
-            href: por-que-es-misogina.qmd
+            href: 3_web_misoginia_musical/por-que-es-misogina.qmd
           - title: "¿Quiénes son los más machistas"
-            href: cantantes-mas-machistas.qmd
+            href: 3_web_misoginia_musical/cantantes-mas-machistas.qmd
           - title: "La (mal)influencia del reggaeton"
-            href: machismo-reggaeton.qmd 
+            href: 3_web_misoginia_musical/machismo-reggaeton.qmd 
           - title: "La muerte del pop"
-            href: popularidad-generos-musicales.qmd
+            href: 3_web_misoginia_musical/popularidad-generos-musicales.qmd
           - title: "Una década de éxitos cada vez más misóginos"
-            href: evolucion-misoginia.qmd
+            href: 3_web_misoginia_musical/evolucion-misoginia.qmd
 
 editor: visual
 
