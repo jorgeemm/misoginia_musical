@@ -199,7 +199,7 @@ Metodología
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div style="font-size: 0.8em;">
-<p>El análisis realizado parte de las listas con las canciones más escuchadas cada año proporcionadas por <a href="https://www.promusicae.es/listas-anuales/">Promusicae</a>, la asociación de la industria discográfica española. A partir de estas, se han seleccionado las 10 canciones más escuchadas cada año entre el 2010 y el 2020, ambos incluídos. A estas se les ha añadido su letra gracias a la base de datos <a href="https://www.kaggle.com/datasets/carlosgdcj/genius-song-lyrics-with-language-information">Genius Songs Lyrics</a>, disponible en Kaggle, la cual contiene todas las letras de las canciones incluidas en la plataforma Genius hasta mediados de 2022. Una vez unidas ambas fuentes de datos, se ha procedido a la creación del GPT personalizado y al posterior análisis de dichas letras.</p>
+<p>El análisis realizado parte de las listas con las canciones más escuchadas cada año proporcionadas por <a href="https://www.promusicae.es/listas-anuales/">Promusicae</a>, la asociación de la industria discográfica española. A partir de estas, se han seleccionado las 10 canciones más escuchadas cada año entre el 2010 y el 2020, ambos incluídos. A estas se les ha añadido su letra gracias a la base de datos <a href="https://www.kaggle.com/datasets/carlosgdcj/genius-song-lyrics-with-language-information">Genius Songs Lyrics</a>, disponible en Kaggle, la cual contiene todas las letras de las canciones incluidas en la plataforma Genius hasta mediados de 2022. Una vez unidas ambas fuentes de datos, se ha procedido a la creación del GPT personalizado y al posterior análisis de dichas letras. Todo el proceso de análisis se puede encontrar en <a href="https://github.com/jorgeemm/misoginia_musical">GitHub</a>.</p>
 <p>El GPT se ha creado a través de la herramienta de IA ChatGPT, con la versión plus. Para ello, seleccionamos una serie de artículos académicos que sirvieron para entrenar el chatbot. Tras esto y después de unas cuantas pruebas, establecimos el siguiente prompt. Para la creación de la base de datos, hemos copiado y pegado -no sin haber revisado- las respuestas del GPT en una hoja de cálculo canción por canción (ya que la automatización que intentamos en un primer momento fracasó).</p>
 <p># Instrucciones para Misogyny Detector 3000: Lyrics Edition</p>
 <p>## <strong>Personalidad, rol y objetivo</strong></p>
@@ -223,9 +223,10 @@ Metodología
 <p>- comment - Comentario analítico del fragmento y su relación con el indicador</p>
 <p>- problematicKeywords - Palabras problemáticas dentro de la canción que se repiten</p>
 <p>Realiza una fila por cada fragmento relevante (puede haber varias por canción).</p>
-<p>##&nbsp; <strong>Indicadores oficiales</strong>:</p>
+<section id="indicadores-oficiales" class="level2">
+<h2 class="anchored" data-anchor-id="indicadores-oficiales"><strong>Indicadores oficiales</strong>:</h2>
 <p>### Indicadores para hombres:</p>
-<p>#### A. Discursos machistas clásicos:&nbsp;</p>
+<p>#### A. Discursos machistas clásicos:</p>
 <p>A.1. Cosificación y despersonalización del cuerpo femenino: Reducción de la mujer a su cuerpo, tratándola como un objeto sexual. También hablar de la cantidad de mujeres que les rodean como si fueran juguetes, sin una personalidad o identidad propia. Sexualizarlas y objetivarlas.</p>
 <p>A.2. Dinámicas de poder y control: Afán de controlar, manipular o someter a la mujer. Esto puede incluir desde la dominación emocional hasta el abuso físico o psicológico o la monitorización de su vida diaria, y se refleja en letras que glorifican o justifican este desequilibrio. Las mujeres como seres sometidos. Abuso psicológico a través de dinámicas de gaslighting, hacer ver a la mujer que está loca, que ha perdido el juicio</p>
 <p>A.3. Invisibilización del consentimiento (No es Sí): La falta de consentimiento, ya sea explícitamente o por omisión. Las dinámicas de consentimiento no son discutidas o son completamente ignoradas, presentando situaciones donde el “no” no es respetado o es borrado. Explicitar la intención de actuar con independencia del consentimiento femenino</p>
@@ -259,6 +260,7 @@ Metodología
 <li><p>Díez-Gutiérrez, E.-J., &amp; Muñiz-Cortijo, L.-M. (2022). Educación reguetón: ¿Educa el reguetón en la desigualdad? Publicaciones, 52(2), 197–212. <a href="https://doi.org/10.29220/iiuse.244861676.2022.52.2.10" class="uri">https://doi.org/10.29220/iiuse.244861676.2022.52.2.10</a></p></li>
 <li><p>López Maestre, M. D. (2021). Canciones, sexismo y violencia de género: un análisis crítico del discurso con perspectiva feminista. Pragmalingüística, (29), 129–144. <a href="https://doi.org/10.25267/Pragmalinguistica.2021.i29.14" class="uri">https://doi.org/10.25267/Pragmalinguistica.2021.i29.14</a></p></li>
 </ul>
+</section>
 </div>
 </div>
 </div>

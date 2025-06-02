@@ -33,7 +33,7 @@ Bailar no es malo. Pero también puedes decidir qué música queremos que nos ac
 ## Metodología
 
 ::: {style="font-size: 0.8em;"}
-El análisis realizado parte de las listas con las canciones más escuchadas cada año proporcionadas por [Promusicae](https://www.promusicae.es/listas-anuales/), la asociación de la industria discográfica española. A partir de estas, se han seleccionado las 10 canciones más escuchadas cada año entre el 2010 y el 2020, ambos incluídos. A estas se les ha añadido su letra gracias a la base de datos [Genius Songs Lyrics](https://www.kaggle.com/datasets/carlosgdcj/genius-song-lyrics-with-language-information), disponible en Kaggle, la cual contiene todas las letras de las canciones incluidas en la plataforma Genius hasta mediados de 2022. Una vez unidas ambas fuentes de datos, se ha procedido a la creación del GPT personalizado y al posterior análisis de dichas letras.
+El análisis realizado parte de las listas con las canciones más escuchadas cada año proporcionadas por [Promusicae](https://www.promusicae.es/listas-anuales/), la asociación de la industria discográfica española. A partir de estas, se han seleccionado las 10 canciones más escuchadas cada año entre el 2010 y el 2020, ambos incluídos. A estas se les ha añadido su letra gracias a la base de datos [Genius Songs Lyrics](https://www.kaggle.com/datasets/carlosgdcj/genius-song-lyrics-with-language-information), disponible en Kaggle, la cual contiene todas las letras de las canciones incluidas en la plataforma Genius hasta mediados de 2022. Una vez unidas ambas fuentes de datos, se ha procedido a la creación del GPT personalizado y al posterior análisis de dichas letras. Todo el proceso de análisis se puede encontrar en [GitHub](https://github.com/jorgeemm/misoginia_musical).
 
 El GPT se ha creado a través de la herramienta de IA ChatGPT, con la versión plus. Para ello, seleccionamos una serie de artículos académicos que sirvieron para entrenar el chatbot. Tras esto y después de unas cuantas pruebas, establecimos el siguiente prompt. Para la creación de la base de datos, hemos copiado y pegado -no sin haber revisado- las respuestas del GPT en una hoja de cálculo canción por canción (ya que la automatización que intentamos en un primer momento fracasó).
 
@@ -81,11 +81,11 @@ Una tabla por canción con las siguientes columnas:
 
 Realiza una fila por cada fragmento relevante (puede haber varias por canción).
 
-##  **Indicadores oficiales**:
+## **Indicadores oficiales**:
 
 \### Indicadores para hombres:
 
-\#### A. Discursos machistas clásicos: 
+\#### A. Discursos machistas clásicos:
 
 A.1. Cosificación y despersonalización del cuerpo femenino: Reducción de la mujer a su cuerpo, tratándola como un objeto sexual. También hablar de la cantidad de mujeres que les rodean como si fueran juguetes, sin una personalidad o identidad propia. Sexualizarlas y objetivarlas.
 
