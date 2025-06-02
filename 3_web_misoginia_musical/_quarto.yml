@@ -1,6 +1,6 @@
 project:
   type: website
-  output-dir: docs
+  output-dir: ../docs
   
 website:
   title: |
@@ -20,17 +20,17 @@ website:
       - section: "Cola de reproducción"
         contents:
           - title: "Misoginia en la música"
-            href: 3_web_misoginia_musical/index.qmd
+            href: index.qmd
           - title: "¿En qué es misógina la música?"
-            href: 3_web_misoginia_musical/por-que-es-misogina.qmd
+            href: por-que-es-misogina.qmd
           - title: "¿Quiénes son los más machistas"
-            href: 3_web_misoginia_musical/cantantes-mas-machistas.qmd
+            href: cantantes-mas-machistas.qmd
           - title: "La (mal)influencia del reggaeton"
-            href: 3_web_misoginia_musical/machismo-reggaeton.qmd 
+            href: machismo-reggaeton.qmd 
           - title: "La muerte del pop"
-            href: 3_web_misoginia_musical/popularidad-generos-musicales.qmd
+            href: popularidad-generos-musicales.qmd
           - title: "Una década de éxitos cada vez más misóginos"
-            href: 3_web_misoginia_musical/evolucion-misoginia.qmd
+            href: evolucion-misoginia.qmd
 
 editor: visual
 
