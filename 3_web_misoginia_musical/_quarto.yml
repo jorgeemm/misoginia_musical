@@ -1,0 +1,87 @@
+project:
+  type: website
+  output-dir: docs
+  
+website:
+  title: |
+    Misoginia en la música
+    <span style="font-size: 0.8em; display: block; color: #C674FF;">
+      Los grandes éxitos con los que creció la Generación Z analizados desde una perspectiva de género
+    </span>
+  bread-crumbs: false
+  page-navigation: false
+  search: false
+  navbar:
+    background: "#222429"
+  sidebar:
+    collapse: false
+    background: "#222429"
+    contents:
+      - section: "Cola de reproducción"
+        contents:
+          - title: "Misoginia en la música"
+            href: index.qmd
+          - title: "¿En qué es misógina la música?"
+            href: por-que-es-misogina.qmd
+          - title: "¿Quiénes son los más machistas"
+            href: cantantes-mas-machistas.qmd
+          - title: "La (mal)influencia del reggaeton"
+            href: machismo-reggaeton.qmd 
+          - title: "La muerte del pop"
+            href: popularidad-generos-musicales.qmd
+          - title: "Una década de éxitos cada vez más misóginos"
+            href: evolucion-misoginia.qmd
+
+editor: visual
+
+format:
+  html:
+    lang: es
+    theme: pulse
+    backgroundcolor: "#222429"
+    fontcolor: "#ffffff"
+    linkcolor: "#C674FF"
+    include-in-header:
+      - text: |
+          <style>
+            /* Cambiar color del texto de la barra lateral (links y sección) */
+            .sidebar a.sidebar-item {
+              color: #C674FF !important;
+            }
+
+            .sidebar .sidebar-section-title {
+              color: #C674FF !important;
+            }
+
+            .sidebar a.sidebar-item:hover {
+              color: #E0AFFF !important;
+            }
+
+            /* Eliminar flechas de colapso */
+            .sidebar .sidebar-item-toggle {
+              display: none !important;
+            }
+
+            /* Evitar espacio para el icono */
+            .sidebar .sidebar-item-container {
+              padding-left: 0 !important;
+            }
+
+            /* Colores títulos */
+            h1, h2, h3 {
+              color: #C674FF !important;
+            }
+
+            /* Navbar */
+            .navbar-dark .navbar-nav .nav-link {
+              color: rgba(255, 255, 255, 0.8) !important;
+            }
+
+            .navbar-title {
+              color: #C674FF !important;
+            }
+          </style>
+          
+      - text: |
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+          

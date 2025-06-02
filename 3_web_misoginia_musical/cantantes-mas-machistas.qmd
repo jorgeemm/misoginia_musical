@@ -1,0 +1,152 @@
+---
+title: "¿Quiénes son los más machistas?"
+format: html
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+Sorpresa: los hombres no solo dominan las listas de éxitos musicales...
+también lideran el ranking del machismo. Inesperado, ¿verdad? Ahora, en
+serio: **casi 8 de cada 10 frases machistas detectadas en nuestro
+análisis aparecen en canciones escritas exclusivamente por ellos**. Y no
+es que las mujeres sean ajenas a estos discursos, pero los números
+hablan por sí solos: **ellos promedian casi 5 discursos machistas por
+canción, mientras que ellas apenas alcanzan 1,5**. 
+
+::: {.flourish-embed .flourish-bubble-chart data-src="visualisation/23160271"}
+```{=html}
+<script src="https://public.flourish.studio/resources/embed.js"></script>
+```
+
+<noscript><img src="https://public.flourish.studio/visualisation/23160271/thumbnail" alt="bubble-chart visualization" width="100%"/></noscript>
+:::
+
+El gráfico anterior trata de concretar estos hechos poniendo el foco en
+los cantantes que más se han escuchado durante los once años estudiados.
+Para ello, hemos seleccionado los 25 artistas que han logrado tener, al
+menos, dos canciones distintas en los diversos Top 10 (cuanto más a la
+derecha en el gráfico está un cantante, mayor es el número de canciones
+que ha situado en los tops). Una vez más, lo primero en llamar la
+atención es la baja presencia de mujeres entre la élite musical. Solo
+cinco mujeres han conseguido tener más de una canción en los diversos
+Top 10 estudiados, en comparación con los 10 hombres que han logrado esa
+hazaña. Pero además, de las cantantes que han logrado tener más de un
+gran éxito, solo Shakira se ha repetido más de dos veces, siendo junto a
+Ozuna la artista que más canciones ha logrado situar entre los grandes
+éxitos de España.
+
+La de Barranquilla también es un ejemplo muy ilustrativo de cómo ellos
+tienden a tener letras más machistas que ellas. Si bien Ozuna y Shakira
+han tenido el mismo número de canciones en las listas estudiadas, en las
+canciones del puertoriqueño se pueden encontrar 4 veces más frases
+machistas por canción que en las de la colombiana. Esta diferencia se
+aprecia en el mayor tamaño que ocupa en el gráfico Ozuna, ya que cuanto
+mayor es su tamaño, más machistas son las letras del artista.
+
+> **El cantante más machista es Anuel AA, con una media de 14,5 frases
+> misóginas por canción**
+
+Por tanto, si nos fijamos en los tamaños, se aprecia un patrón claro en
+los artistas con las letras más misóginas. Anuel AA, Ozuna, Daddy
+Yankee, Myke Towers… todos estos cantantes tienen algo en común aparte
+de ser hombres, y es el tipo de música que hacen. No solo los reyes del
+reggaeton son los cantantes con más éxitos entre 2010 y 2020, sino que
+también son quienes tienen las letras más machistas. Pero, ¿se trata de
+una casualidad que estos artistas sean más misóginos, o podemos decir
+que el reggaeton juega de por sí un papel en la introducción de
+discursos donde se normaliza el machismo?
+
+<br><br>
+
+<br><br>
+
+<!-- BOTONES Y AUDIO -->
+
+::: {style="display: flex; justify-content: space-between; align-items: center; margin-top: 3rem; font-size: 1.1em;"}
+<!-- Enlace anterior -->
+
+<a href="por-que-es-misogina.qmd" style="color: #C674FF; text-decoration: none;">
+<i class="fa-solid fa-backward-step" style="margin-right: 8px;"></i> ¿En
+qué es misógina la música? </a>
+
+<!-- Botón central: play/pause -->
+
+<a href="#" id="play-pause-button" style="color: #C674FF; text-decoration: none;">
+<i id="play-icon" class="fa-solid fa-play" style="font-size: 2em;"></i>
+</a>
+
+<!-- Enlace siguiente -->
+
+<a href="machismo-reggaeton.qmd" style="color: #C674FF; text-decoration: none;">
+La (mal) influencia del reggaeton
+<i class="fa-solid fa-forward-step" style="margin-left: 8px;"></i> </a>
+:::
+
+<!-- AUDIO INVISIBLE -->
+
+<audio id="music-player" style="display:none;">
+
+</audio>
+
+```{=html}
+<script>
+  const audioFiles = [
+    "audio/audio1.mp3",
+    "audio/audio2.mp3",
+    "audio/audio3.mp3",
+    "audio/audio4.mp3",
+    "audio/audio5.mp3",
+    "audio/audio6.mp3",
+    "audio/audio7.mp3",
+    "audio/audio8.mp3"
+  ];
+
+  let currentAudio = new Audio();
+  let lastIndex = -1; // Para recordar el índice anterior
+  const playIcon = document.getElementById("play-icon");
+  const playButton = document.getElementById("play-pause-button");
+
+  // Función para obtener un índice diferente al anterior
+  function getNewRandomIndex() {
+    let newIndex;
+    do {
+      newIndex = Math.floor(Math.random() * audioFiles.length);
+    } while (newIndex === lastIndex && audioFiles.length > 1);
+    lastIndex = newIndex;
+    return newIndex;
+  }
+
+  // Función para cargar y reproducir nuevo audio
+  function playRandomAudio() {
+    const newIndex = getNewRandomIndex();
+    currentAudio.src = audioFiles[newIndex];
+    currentAudio.play();
+  }
+
+  // Evento para cuando se acaba una pista
+  currentAudio.addEventListener("ended", () => {
+    playRandomAudio();
+  });
+
+  // Control del botón play/pause
+  playButton.addEventListener("click", function (e) {
+    e.preventDefault();
+
+    if (currentAudio.paused || currentAudio.ended) {
+      playIcon.classList.remove("fa-play");
+      playIcon.classList.add("fa-pause");
+      // Si el audio no tiene src todavía o ha terminado
+      if (!currentAudio.src || currentAudio.ended) {
+        playRandomAudio();
+      } else {
+        currentAudio.play();
+      }
+    } else {
+      currentAudio.pause();
+      playIcon.classList.remove("fa-pause");
+      playIcon.classList.add("fa-play");
+    }
+  });
+</script>
+```

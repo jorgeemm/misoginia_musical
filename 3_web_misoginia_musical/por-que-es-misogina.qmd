@@ -1,0 +1,112 @@
+---
+title: "¿En qué es misógina la música?"
+format: html
+editor: visual
+---
+
+:::: column-body
+::: {#datawrapper-vis-N8nq5 style="min-height:400px"}
+```{=html}
+<script type="text/javascript" defer src="https://datawrapper.dwcdn.net/N8nq5/embed.js" charset="utf-8" data-target="#datawrapper-vis-N8nq5"></script>
+```
+
+<noscript><img src="https://datawrapper.dwcdn.net/N8nq5/full.png"/></noscript>
+:::
+::::
+
+El gráfico anterior muestra la presencia media de cada uno de los indicadores machistas por canción, para poder así visualizar qué hace que las canciones que escuchamos sean machistas. En él, los indicadores femeninos de amor tóxico y competencia han sido agrupados con sus equivalentes masculino. Como se puede apreciar, de los diferentes aspectos de la misoginia analizados los más comunes son el amor tóxico y la cosificación, seguidos por los discursos con dinámicas de control o que niegan el consentimiento femenino. Por el lado contrario, apenas hemos localizado canciones en las que se busque la validación masculina, aunque el hecho de que este indicador sea el menos presente no solo se debe a que las mujeres sean menos misóginas al escribir, también a la escasa frecuencia de canciones interpretadas por una mujer.
+
+> **De media, las canciones estudiadas poseen al menos una frase cosificando a las mujeres o promoviendo el amor tóxico.**
+
+Resulta llamativo también lo poco comunes que son las líricas que hacen referencia a roles de género tradicionales o que poseen un lenguaje machista explícito. Es una muestra de cómo evoluciona la tolerancia ante determinadas expresiones y de cómo la música es un espejo de su momento temporal. Mientras que en las canciones que escuchaban nuestros padres el refuerzo de los roles tradicionales era el pan de cada día, ya en la década del 2010 determinadas expresiones nos parecerían estar fuera de lugar. Por el contrario, en los últimos años se ha aumentado la tolerancia hacia expresiones y palabras más explicitas que hace apenas una década nos parecería imposible escuchar en la radio.
+
+Sin embargo, se debe tener presente que no todas las canciones estudiadas cuentan con indicadores machistas y, cuando lo hacen, no siempre son los mismos ni en la misma frecuencia. Esta variedad entre canciones se aprecia gracias al área sombreada de cada una de las barras. Un ejemplo para comprenderlo fácilmente se sitúa en el indicador de competencia. La presencia media de este es de 0,3, por lo que se podría llegar a presuponer que una de cada tres canciones contiene algún tipo de verso en el que un hombre o una mujer compiten por otra. Sin embargo, el área sombreada es muy amplia, y va desde el 0,15 hasta el 0,55. Esta incertidumbre permite suponer que, si bien en algunas de las canciones estudiadas la competición por una pareja o sexual es muy común, en la gran mayoría ni siquiera aparece.
+
+Las diferencias en el número y tipo de frases machistas que aparecen en cada canción no son fruto del azar. Hay un patrón que se repite. Pero todo depende de quién y cómo canta… En la siguiente sección, ponemos nombres y cifras sobre la mesa: ¿quiénes son los artistas cuyas letras más repiten discursos tóxicos? ¿Quién lidera el ranking del machismo lírico?
+
+<br><br>
+
+<br><br>
+
+<!-- BOTONES Y AUDIO -->
+
+::: {style="display: flex; justify-content: space-between; align-items: center; margin-top: 3rem; font-size: 1.1em;"}
+<!-- Enlace anterior -->
+
+<a href="index.qmd" style="color: #C674FF; text-decoration: none;"> <i class="fa-solid fa-backward-step" style="margin-right: 8px;"></i> Misoginia en la música </a>
+
+<!-- Botón central: play/pause -->
+
+<a href="#" id="play-pause-button" style="color: #C674FF; text-decoration: none;"> <i id="play-icon" class="fa-solid fa-play" style="font-size: 2em;"></i> </a>
+
+<!-- Enlace siguiente -->
+
+<a href="cantantes-mas-machistas.qmd" style="color: #C674FF; text-decoration: none;"> ¿Quiénes son los más machistas? <i class="fa-solid fa-forward-step" style="margin-left: 8px;"></i> </a>
+:::
+
+<!-- AUDIO INVISIBLE -->
+
+<audio id="music-player" style="display:none;">
+
+</audio>
+
+```{=html}
+<script>
+  const audioFiles = [
+    "audio/audio1.mp3",
+    "audio/audio2.mp3",
+    "audio/audio3.mp3",
+    "audio/audio4.mp3",
+    "audio/audio5.mp3",
+    "audio/audio6.mp3",
+    "audio/audio7.mp3",
+    "audio/audio8.mp3"
+  ];
+
+  let currentAudio = new Audio();
+  let lastIndex = -1; // Para recordar el índice anterior
+  const playIcon = document.getElementById("play-icon");
+  const playButton = document.getElementById("play-pause-button");
+
+  // Función para obtener un índice diferente al anterior
+  function getNewRandomIndex() {
+    let newIndex;
+    do {
+      newIndex = Math.floor(Math.random() * audioFiles.length);
+    } while (newIndex === lastIndex && audioFiles.length > 1);
+    lastIndex = newIndex;
+    return newIndex;
+  }
+
+  // Función para cargar y reproducir nuevo audio
+  function playRandomAudio() {
+    const newIndex = getNewRandomIndex();
+    currentAudio.src = audioFiles[newIndex];
+    currentAudio.play();
+  }
+
+  // Evento para cuando se acaba una pista
+  currentAudio.addEventListener("ended", () => {
+    playRandomAudio();
+  });
+
+  // Control del botón play/pause
+  playButton.addEventListener("click", function (e) {
+    e.preventDefault();
+
+    if (currentAudio.paused || currentAudio.ended) {
+      playIcon.classList.remove("fa-play");
+      playIcon.classList.add("fa-pause");
+      if (!currentAudio.src || currentAudio.ended) {
+        playRandomAudio();
+      } else {
+        currentAudio.play();
+      }
+    } else {
+      currentAudio.pause();
+      playIcon.classList.remove("fa-pause");
+      playIcon.classList.add("fa-play");
+    }
+  });
+</script>
+```

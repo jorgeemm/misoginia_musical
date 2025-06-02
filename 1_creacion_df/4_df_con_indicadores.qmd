@@ -1,0 +1,114 @@
+---
+title: "Creación indicadores gráficos"
+format: html
+editor: visual
+---
+
+## Cargar librerías y datos
+
+```{r}
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(readxl)
+```
+
+```{r}
+datos_original <- read_xlsx("../0_bases_datos/verbatims_top_10_2010_2020.xlsx") %>% 
+  # Como la única columna que se repite para una misma canción es la de los verbatims
+  # y el resto aparecen como celdas vacías, se rellenan estas.
+  fill(1:5, .direction = "down") %>% 
+  janitor::clean_names()
+```
+
+## Cambiar nombres variables
+
+```{r}
+# Ver el nombre de todos los indicadores
+datos_original %>% 
+  distinct(indicador) %>% 
+  pull(indicador)
+
+# Homogeneizar y simplificar el nombre de los indicadores para los posteriores análisis
+datos <- datos_original %>% 
+  mutate(
+    indicador_limpio = case_when(
+      str_detect(indicador, "^[A-Z]\\d{1,2}\\.") ~ 
+        str_extract(indicador, "^[A-Z]\\d{1,2}") %>%
+        paste0("i_", .),
+      str_detect(indicador, "^[A-Z]\\.\\d{1,2}\\.") ~ 
+        str_extract(indicador, "^[A-Z]\\.\\d{1,2}") %>%
+        str_replace("\\.", "") %>%
+        paste0("i_", .),
+      str_detect(indicador, "^[A-Z]\\d{1,2}\\s") ~ 
+        str_extract(indicador, "^[A-Z]\\d{1,2}") %>% 
+        paste0("i_", .),
+      TRUE ~ indicador))
+```
+
+## Transformación de la base a formato ancho
+
+```{r}
+#| message: false
+#| warning: false
+
+datos <- datos %>%
+  # Se cre una nueva variable numérica que indique la presencia de un indicador, para poder 
+  # realizar las transformaciones posteriores
+  mutate(conteo_indicador = 1) %>% 
+  
+  # Se agrupan los datos por los indicadores, para contar así cúantas veces se repiten
+  # En el group by se han incluído también varias variables más de interés para el análisis
+  group_by(ano, titulo, cantantes,
+           genero_del_cantante, genero_de_la_cancion,
+           indicador_limpio) %>% 
+  
+  # Se calcula cuantas veces se repite cada indicador en cada canción
+  summarise(conteo_indicador = sum(conteo_indicador, na.rm = T)) %>% 
+  
+  # Se transforman los datos a formato ancho, de tal forma que cada tipo de indicador
+  # sea una coluna, y cada canción aperza en una única fila
+  pivot_wider(names_from = "indicador_limpio", values_from = "conteo_indicador") %>% 
+  
+  # Se sutituyen los NA en los indicadores por un 0 para mostrar la ausencia del indicador
+  mutate(across(
+    where(is.numeric),
+    ~ ifelse(is.na(.), 0, .)
+  )) %>% 
+  janitor::clean_names()
+```
+
+## Agrupar géneros
+
+```{r}
+datos <- datos %>%
+  mutate(
+    genero_agrupado = case_when(
+      str_detect(str_to_lower(genero_de_la_cancion),
+                 "edm|house|electronica") ~ "Electronica",
+      str_detect(str_to_lower(genero_de_la_cancion),
+                 "hip-hop|rap|regueton.*rap|trap") ~ "Hiphop",
+      str_detect(genero_de_la_cancion, "^[Pp]op$") ~ "Pop",
+      TRUE ~ genero_de_la_cancion)) 
+```
+
+## Total indicadores por canción
+
+```{r}
+datos <- datos %>%
+  rowwise() %>%
+  mutate(
+    suma_ic = sum(c_across(starts_with("i_c")),
+                    na.rm = TRUE),
+    suma_ia = sum(c_across(starts_with("i_a")),
+                    na.rm = TRUE),
+    indicadores_totales = sum(c(suma_ic, suma_ia),
+                               na.rm = TRUE),
+    indicadores_feminista = sum(
+      c_across(starts_with("i_b")),
+      na.rm = TRUE)) %>%
+  ungroup()
+
+# write.csv(datos, "0_datos/letras_analisis.csv")
+```

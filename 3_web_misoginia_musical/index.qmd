@@ -1,0 +1,125 @@
+---
+title: "¿Es la música machista?"
+---
+
+*Un análisis de Jorge Martín Marcos, Keko Menéndez Turkeri y Laura Sánchez Martín*
+
+**FOTO PORTADA**
+
+<br>
+
+Nos sabíamos las letras de memoria. Las cantábamos en fiestas, en coches, en auriculares. Las bailábamos sin pensar. Pero, ¿qué decían realmente esas canciones que marcaron la juventud de toda nuestra generación?
+
+Nos hemos preguntado si la música más escuchada entre el 2010 y el 2020, con la creció nuestra generación, es machista o no. ¿Han servido los grandes éxitos para que normalicemos ciertos discursos machistas? ¿Cómo influyó el paso del pop al reggaeton en los tops y las listas de éxitos?
+
+> **Tres de cada cuatro canciones contienen algún tipo de contenido machista**
+
+Un simple vistazo a los datos lleva a pensar qué sí. Si nos fijamos en las 10 canciones más escuchadas cada año a lo largo de la década de 2010, vemos que **3 de cada 4 canciones contienen algún tipo de contenido machista**. Es especialmente preocupante la **cosificación del cuerpo femenino**, dándose este fenómeno en más de la mitad de las letras analizadas.
+
+> **Las mujeres solo interpretan un tercio de las canciones**
+
+Por si fuera poco, la normalización de los discursos machistas dentro de la música va de la mano de la infrarrepresentación de las mujeres en las mismas. **En el escenario de la música popular, las mujeres han ocupado, como mucho, un tercio del micrófono**. Además, la mitad de éstas son colaboraciones con algún hombre. Así, mientras que 7 de cada 10 canciones están interpretadas únicamente por hombres, las mujeres tan solo cantan en solitario en un 15% de los grandes éxitos estudiados. Se trata de un problema que sigue estando muy presente, puesto que plataformas como [Spotify discriminan a las mujeres](https://jenesaispop.com/2025/03/07/493901/spotify-espana-exitos-espana-mujeres/) de forma constante en sus listas de éxitos.
+
+### **¿Cómo hemos llegado a todas estas conclusiones?**
+
+Empecemos por el principio. Queríamos saber cuándo una canción cruzaba la línea, pero también queríamos ir más allá del análisis de ciertas canciones específicas. Buscábamos patrones, discursos… Identificar un eco que se repite año tras año, hit tras hit.
+
+Para llevar a cabo este análisis, ir más allá de la intuición y captar todo aquello que muchas veces pasa desapercibido, entrenamos a una IA que aprendió a sistemáticamente detectar frases que nos alertaran de la presencia de contenido misógino en la letra de las canciones. Al final del artículo, en el apartado de Metodología se explica con más detalle el proceso de selección de las letras de las canciones y del GPT personalizado.
+
+Para ello, generamos una lista de indicadores que sintetizan y categorizan las diferentes formas en las que este contenido machista podía ponerse de manifiesto. Clasificamos estos indicadores en siete formas de machismo cuando la voz es masculina, tres cuando es femenina, y añadimos dos indicadores de empoderamiento para ver si, en vez de alimentar estos estereotipos, algunas artistas habían hecho uso de su altavoz para reescribir estos discursos.
+
+Todos estos indicadores se entienden mejor a través de algunas canciones…
+
+**IMÁGENES INDICADORES MACHISTAS Y FEMINISTAS**
+
+Una vez definidos los tipos de machismo que buscamos en las letras, la pregunta inevitable es: ¿cuál de todos aparece más a menudo? Spoiler: hay indicadores que no solo están presentes… están en bucle. En la siguiente sección lo analizamos en profundidad.
+
+<br><br>
+
+<!-- Botones con reproducción -->
+
+:::: {style="display: flex; justify-content: space-between; align-items: center; margin-top: 3rem; font-size: 1.1em;"}
+<!-- Espacio vacío para alinear a la izquierda -->
+
+<div>
+
+</div>
+
+<!-- Botón central (play/pause) -->
+
+<a href="#" id="play-pause-button" style="color: #C674FF; text-decoration: none;"> <i id="play-icon" class="fa-solid fa-play" style="font-size: 2em;"></i> </a>
+
+<!-- Botón de navegación a la derecha -->
+
+<a href="por-que-es-misogina.qmd" style="color: #C674FF; text-decoration: none;"> ¿En qué es misógina la música? <i class="fa-solid fa-forward-step" style="margin-left: 8px;"></i> </a>
+::::
+
+<!-- AUDIO INVISIBLE -->
+
+<audio id="music-player" style="display:none;">
+
+</audio>
+
+<!-- Script para manejar play/pause -->
+
+```{=html}
+<script>
+  const audioFiles = [
+    "audio/audio1.mp3",
+    "audio/audio2.mp3",
+    "audio/audio3.mp3",
+    "audio/audio4.mp3",
+    "audio/audio5.mp3",
+    "audio/audio6.mp3",
+    "audio/audio7.mp3",
+    "audio/audio8.mp3"
+  ];
+
+  let currentAudio = new Audio();
+  let lastIndex = -1; // Para recordar el índice anterior
+  const playIcon = document.getElementById("play-icon");
+  const playButton = document.getElementById("play-pause-button");
+
+  // Función para obtener un índice diferente al anterior
+  function getNewRandomIndex() {
+    let newIndex;
+    do {
+      newIndex = Math.floor(Math.random() * audioFiles.length);
+    } while (newIndex === lastIndex && audioFiles.length > 1);
+    lastIndex = newIndex;
+    return newIndex;
+  }
+
+  // Función para cargar y reproducir nuevo audio
+  function playRandomAudio() {
+    const newIndex = getNewRandomIndex();
+    currentAudio.src = audioFiles[newIndex];
+    currentAudio.play();
+  }
+
+  // Evento para cuando se acaba una pista
+  currentAudio.addEventListener("ended", () => {
+    playRandomAudio();
+  });
+
+  // Control del botón play/pause
+  playButton.addEventListener("click", function (e) {
+    e.preventDefault();
+
+    if (currentAudio.paused || currentAudio.ended) {
+      playIcon.classList.remove("fa-play");
+      playIcon.classList.add("fa-pause");
+      // Si el audio no tiene src todavía o ha terminado
+      if (!currentAudio.src || currentAudio.ended) {
+        playRandomAudio();
+      } else {
+        currentAudio.play();
+      }
+    } else {
+      currentAudio.pause();
+      playIcon.classList.remove("fa-pause");
+      playIcon.classList.add("fa-play");
+    }
+  });
+</script>
+```

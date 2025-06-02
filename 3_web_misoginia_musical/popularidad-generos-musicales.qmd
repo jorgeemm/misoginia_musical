@@ -1,0 +1,110 @@
+---
+title: "La muerte del pop"
+format: html
+---
+
+Y es que el problema tras la elevada frecuencia de discursos machistas en el reggaetón, junto a la ausencia casi total de referencias emancipadoras, hay que entenderlo también junto con el aumento de la popularidad del género latino durante la última década. No solo ha aumentado su presencia, sino que, como muestra el gráfico siguiente, prácticamente ha terminado cooptando las listas de éxitos musicales en España, pudiéndose apreciar desde 2017 un monopolio indiscutible de este género.
+
+:::: column-body
+::: {#datawrapper-vis-ifxTG style="min-height:400px"}
+```{=html}
+<script type="text/javascript" defer src="https://datawrapper.dwcdn.net/ifxTG/embed.js" charset="utf-8" data-target="#datawrapper-vis-ifxTG"></script>
+```
+
+<noscript><img src="https://datawrapper.dwcdn.net/ifxTG/full.png"/></noscript>
+:::
+::::
+
+Para poder estudiar de un modo más preciso cuál ha sido la evolución de los géneros más escuchados, y al no requerir este gráfico del análisis de las letras de las canciones, en esta ocasión se ha aumentado la selección a las 25 canciones más escuchadas cada año. Gracias a esta ampliación hemos podido ver cómo el tránsito del pop al reggaeton entre los éxitos musicales no es tan abrupto como podría parecer, sino que la categoría intermedia del gráfico, donde se agrupan otros géneros musicales menos populares, permite comprender parte de la transición musical. Aunque esta categoría incluye principalmente canciones de Hip-Hop, a principios de la década un nuevo género logró colarse en las radios y mp3 de los españoles, el electrolatino. Por tanto, la colonización de los éxitos musicales por parte de canciones con ritmos más latinos ya llevaba un tiempo produciéndose, aprovechando el reggaeton la puerta que el electrolatino abrió. 
+
+Sin embargo, el nuevo imperio del reggaeton no es indiscutible, sino que en el año 2018 se produjo un ligero repunte del pop debido al triunfante regreso de Operación Triunfo, que se retransmitió entre finales de 2017 y comienzos de ese año. Como consecuencia, canciones como Teléfono de Aitana, Ni la hora de Ana Guerra -junto a Juan Magán- o Lo Malo de Aitana y Ana Mena se colaron entre las más escuchadas en el país, adueñándose de plazas que de otra forma seguramente hubieran sido ocupadas por canciones de reggaeton.
+
+> **La primera nueva generación de OT reintrodujo el pop en los éxitos del 2018**
+
+Pero, a pesar de esta excepción, o que la transición del pop al reggaeton no sea tan abrupta como puede hacer pensar un vistazo rápido al gráfico, es indiscutible que este género ha logrado convertirse en lo más escuchado del país. Por ello conviene estudiar las consecuencias de este ascenso en las listas, al ser este un género donde el número de indicadores machistas encontrado es muy superior al del pop.
+
+Así, podemos decir que el reggaetón no inventó el machismo. Pero lo normalizó, lo volvió bailable y lo puso en bucle. Desde 2017 domina las listas de éxitos en España y, con él, sube también la frecuencia de mensajes cosificadores, controladores y tóxicos.
+
+<br><br>
+
+::: {style="display: flex; justify-content: space-between; align-items: center; margin-top: 3rem; font-size: 1.1em;"}
+<!-- Enlace anterior -->
+
+<a href="machismo-reggaeton.qmd" style="color: #C674FF; text-decoration: none;"> <i class="fa-solid fa-backward-step" style="margin-right: 8px;"></i> La (mal) influencia del reggaeton</a>
+
+<!-- Botón central: play/pause -->
+
+<a href="#" id="play-pause-button" style="color: #C674FF; text-decoration: none;"> <i id="play-icon" class="fa-solid fa-play" style="font-size: 2em;"></i> </a>
+
+<!-- Enlace siguiente -->
+
+<a href="evolucion-misoginia.qmd" style="color: #C674FF; text-decoration: none;"> Una década de éxitos más misóginos <i class="fa-solid fa-forward-step" style="margin-left: 8px;"></i> </a>
+:::
+
+<!-- AUDIO INVISIBLE -->
+
+<audio id="music-player" style="display:none;">
+
+</audio>
+
+```{=html}
+<script>
+  const audioFiles = [
+    "audio/audio1.mp3",
+    "audio/audio2.mp3",
+    "audio/audio3.mp3",
+    "audio/audio4.mp3",
+    "audio/audio5.mp3",
+    "audio/audio6.mp3",
+    "audio/audio7.mp3",
+    "audio/audio8.mp3"
+  ];
+
+  let currentAudio = new Audio();
+  let lastIndex = -1; // Para recordar el índice anterior
+  const playIcon = document.getElementById("play-icon");
+  const playButton = document.getElementById("play-pause-button");
+
+  // Función para obtener un índice diferente al anterior
+  function getNewRandomIndex() {
+    let newIndex;
+    do {
+      newIndex = Math.floor(Math.random() * audioFiles.length);
+    } while (newIndex === lastIndex && audioFiles.length > 1);
+    lastIndex = newIndex;
+    return newIndex;
+  }
+
+  // Función para cargar y reproducir nuevo audio
+  function playRandomAudio() {
+    const newIndex = getNewRandomIndex();
+    currentAudio.src = audioFiles[newIndex];
+    currentAudio.play();
+  }
+
+  // Evento para cuando se acaba una pista
+  currentAudio.addEventListener("ended", () => {
+    playRandomAudio();
+  });
+
+  // Control del botón play/pause
+  playButton.addEventListener("click", function (e) {
+    e.preventDefault();
+
+    if (currentAudio.paused || currentAudio.ended) {
+      playIcon.classList.remove("fa-play");
+      playIcon.classList.add("fa-pause");
+      // Si el audio no tiene src todavía o ha terminado
+      if (!currentAudio.src || currentAudio.ended) {
+        playRandomAudio();
+      } else {
+        currentAudio.play();
+      }
+    } else {
+      currentAudio.pause();
+      playIcon.classList.remove("fa-pause");
+      playIcon.classList.add("fa-play");
+    }
+  });
+</script>
+```

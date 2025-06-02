@@ -1,0 +1,354 @@
+---
+title: "Misoginia en la música - limpieza de datos"
+subtitle: "Visualización de datos - MAPE <br>Jorge Martín, Keko Menéndez, Laura Sánchez"
+format: 
+  html:
+    code-annotations: hover
+    title-block-banner: "#000000"
+    title-block-banner-color: "#A642F2"
+    include-in-header:
+      - text: |
+          <style>
+            body {
+              background-color: #FEF8FF;  /* Color de fondo principal */
+            }
+          </style>
+    lang: es
+editor: visual
+execute:
+  eval: false
+---
+
+## Cargar las librerías
+
+```{r}
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(stringi)
+library(janitor)
+library(fuzzyjoin)
+```
+
+## Apertura de los datos
+
+**Datos con las letras de las canciones**. En este proceso de apertura se ha aprovechado también para cambiar el nombre de las variables y dejar solo las que se usarán en el análisis final.
+
+```{r}
+letras_original <- read.csv("C:/Users/Lenovo/Downloads/archive/song_lyrics.csv") %>% 
+  
+  filter(year != 2022) %>% #<1>
+  
+  mutate(ft = ifelse(features == "{}", NA, features)) %>% #<2>
+  
+  select(cancion = title, 
+         genero = tag,
+         artista = artist,
+         ft,
+         letra = lyrics,
+         idioma = language,
+         idioma1 = language_cld3,
+         idioma2 = language_ft,
+         year) 
+```
+
+1.  Los datos de este año están incompletos, por lo que no se utilizarán en el análisis. Se eliminan al principio para así tratar de reducir un poco el tamaño de la base de datos.
+2.  Cuando no ha ningún ft, en la base original aparece como un espacio en blanco, por lo que estos se sustituyen por NA.
+
+**Datos con el top**. Como los nombres de las variables no son demasiado adecuados, se ha usado la función clean names para evitar problemas posteriores.
+
+```{r}
+top_canciones <- read.csv2("TOP_50_2010_2022.csv") %>% 
+    clean_names()
+```
+
+## División de los datos
+
+Como la base de datos es demasiado pesada, nuestros ordenadores no son capaces de ejecutar todos los comandos de una. Es especialmente problemático el proceso de unión de las dos bases, donde ninguno hemos sido capaces de hacerlo funcionar por falta de potencia. Asimismo, R tampoco era capaz de llevar a cabo la separación de los artistas en diferentes columnas. Por ello, nos hemos visto obligados a dividir el proceso por años. En lugar de unir los dos df de una sola vez, hemos optado por unirlos año a año, para evitar de este modo que R colapse. Para ello, hemos dividido la base del top para cada año, y la de las letras para cada año y su anterior, para asegurarnos de esta forma que, en el caso de que alguna canción se mantuviera dos años en el top, no perderla.
+
+Las bases con las letras divididas las hemos guardado como archivos independientes para asegurarnos de que, en el caso de que algo fallara, no tener que volver a repetir el proceso de división entero, ya que este requiere bastante tiempo.
+
+Comenzamos con la **base de las letras**:
+
+```{r}
+years <- 2010:2021 #<1>
+
+for(i in years){ #<2>
+  
+  df_letra <- letras_original %>%
+    filter(year %in% c(i, i-1, i-2)) #<3>
+  
+  write.csv(df_letra, #<4>
+            file = paste0("C:/Users/Lenovo/Downloads/df_letras/letras_",i,".csv")) 
+}
+
+rm(df_letra, #<5>
+   letras_original) #<5>
+```
+
+1.  Se crea un vector con los años que se quieren analizar.
+2.  Para que el proceso sea más sencillo, y reducir la cantidad de código empleado, se ha optado por usar un loop en lugar de dividir las bases a mano.
+3.  Se filtran los datos originales para dejar únicamente las canciones del año de interés y de los dos previos, ya que algunas canciones pueden mantenerse en el top varios años o entrar con retraso (especialmente a principios de la década).
+4.  Se guardan los nuevos archivos generados.
+5.  Se eliminan el nuevo objeto creado dentro del loop y la base de datos de las letras original para no sobrecargar R con demasiados datos.
+
+Como los **datos con el top** no son tan pesados, el proceso de separación en este caso sí se realizará tras la edición de las variables, para que sea más simple de llevar a cabo.
+
+## Limpieza de datos: letras
+
+Para poder juntar las dos bases de datos, es necesario que las variables de unión, en este caso los cantantes y el título, sean iguales. Se trata de un proceso un poco complicado ya que poseen formatos bastante diferentes en los dos df, lo que genera numerosos problemas para unirlos. A continuación se muestra la estrategia final que hemos decidido adoptar, que es la maximiza el número de uniones realizadas automáticamente gracias al joint.
+
+```{r}
+#| warning: false
+
+for (i in years){
+  
+  letras_i <- read.csv(paste0("C:/Users/Lenovo/Downloads/df_letras/letras_", i, ".csv"))#<1>
+  
+  letras_i <- letras_i %>% 
+    
+    separate(artista, #<2>
+             into = c("artista", "artista2", "artista3", "artista4"),
+             sep = "\\s*[,&]\\s*") %>% #<2>
+    
+    mutate(across( #<3>
+      starts_with("artista"),
+      \(x) x %>% 
+        str_to_upper() %>% #<4>
+        stri_trans_general("Latin-ASCII") %>%  #<5>
+        str_remove_all("[[:punct:]]") %>%  #<6>
+        str_squish() #<7>
+    )) %>% #<3>
+    
+    
+    mutate( #<8>
+      cancion = cancion %>% #<9>
+        str_to_upper() %>% 
+        stri_trans_general("Latin-ASCII") %>%
+        str_remove_all("[[:punct:]]") %>%
+        str_squish()) #<9>
+  
+  write.csv(letras_i, #<10>
+            file = paste0("C:/Users/Lenovo/Downloads/df_letras_editadas/letras_",i,".csv")) 
+}
+
+rm(letras_i) #<11>
+```
+
+1.  Se crea el objeto sobre el que se aplicarán los cambios. Para ello, se abre la base de datos correspondiente con uno de los años. De esta forma, al tener abierto únicamente uno de los años cada vez, R no se ve tan sobrecargado.
+2.  Como en la variable de artista en ocasiones aparece más de un nombre, se va a separar la variable en diferentes columnas, dejando un único cantante en cada columna de artista.
+3.  Se homogeneizan los nombres de los cantantes.
+4.  Se pasa el nombre a mayúsculas.
+5.  Se eliminan los acentos y otros símbolos que puedan dar problemas en el nombre (como la ñ).
+6.  Se eliminan todos los caracteres especiales, ya que al hacer la unión de bases podrían dar lugar a problemas.
+7.  Se eliminan los espacios que hayan podido quedar al principio y al final de los nombres. Además, se usa str_squish() en lugar de str_trim() para eliminar también posibles espacios dobles que existan entre palabras.
+8.  Los diferentes mutate se han realizado por separado ya que esto disminuye los recursos que necesita R para trabajar, reduciendo el tiempo de espera y facilitando la edición.
+9.  Se repite el proceso de edición de los artistas con el nombre de las canciones.
+10. De nuevo, se guardan los df para evitar tener que repetir todo el proceso en caso de que posteriormente algo fallara.
+11. Se elimina el objeto sobre el que se estaba trabajando para no tener en el environmente objetos innecesarios gastando potencia.
+
+## Limpieza de datos: top
+
+Si bien en las listas proporcionadas por Promusicae los nombres tanto de los cantantes como de las canciones ya están en mayúsculas, sí contienen acentos y otros símbolos, por lo que se debe repetir el proceso anterior para que en las dos bases de datos los nombres sean lo más parecidos posibles.
+
+Asimismo, en este caso también se deben dividir en columnas los diversos artistas, ya que vienen todos en una sola, separados en este caso por /. Además, se clonarán las variables originales con el título y los artistas, para poder mantenerlas sin modificar. De lo contrario, se podría complicar el análisis final, especialmente en el momento en el que se quiera hacer referencia a canciones concretas.
+
+```{r}
+top <- top_canciones %>% 
+  mutate(cantantes = artista) %>% 
+  
+  separate(artista, #<1>
+           into = c("artista", "artista2", "artista3", "artista4"),
+           sep = "\\s*(/|,|FEAT\\.)\\s*") %>% #<1>
+  
+  mutate( #<2>
+    across(
+      starts_with("artista"),
+      \(x) x %>% 
+        stri_trans_general("Latin-ASCII") %>%
+        str_remove_all("[[:punct:]]") %>%
+        str_squish()),
+    
+    cancion = titulo %>% 
+      stri_trans_general("Latin-ASCII") %>%
+      str_remove_all("[[:punct:]]") %>%
+      str_squish()) %>%  #<2>
+  
+  mutate(
+    cancion = case_when( #<3>
+      cancion == "DJADJA" ~ "DJADJA MALUMA REMIX",
+      cancion == "MALAMENTE" ~ "MALAMENTE CAP1 AUGURIO",
+      cancion == "ELLA QUIERE BEBER" ~ "ELLA QUIERE BEBER REMIX",
+      cancion == "X" ~ "X EQUIS",
+      cancion == "CHEAP THRILLS" ~ "CHEAP THRILLS REMIX",
+      cancion == "FAST CAR RADIO EDIT" ~ "FAST CAR",
+      cancion == "CHEERLEADER FELIX JAEHN REMIX RADIO EDIT" ~ 
+        "CHEERLEADER FELIX JAEHN REMIX",
+      cancion == "LOVE ME LIKE YOU DO FROM FIFTY SHADES OF GREY" ~
+        "LOVE ME LIKE YOU DO",
+      cancion == "EARNED IT FIFTY SHADES OF GREY" ~ "EARNED IT",
+      cancion == "ANIMALS" ~ "ANIMALS BRONING BOOTLEG",
+      cancion == "GANGNAM STYLE" ~ "강남스타일 GANGNAM STYLE",
+      cancion == "LOVE ME AGAIN REMIXES" ~ "LOVE ME AGAIN",
+      cancion == "QUEDATE CONMIGO EUROVISION" ~ "QUEDATE CONMIGO",
+      cancion == "SWEAT" ~ "SWEAT SNOOP DOGG VS DAVID GUETTA",
+      cancion == "CHIQUITITA" ~ "CHIQUITITA SPANISH VERSION",
+      cancion == "WAKA WAKA" ~ "WAKA WAKA ESTO ES AFRICA",
+      cancion == "RUN RUN" ~ "EL RUN RUN",
+      cancion == "NO SIGUE MODAS" ~ "ELLA NO SIGUE MODAS",
+      T ~ cancion),
+    
+    artista = case_when(
+      artista == "THE BLACK EYED PEAS" ~ "BLACK EYED PEAS",
+      artista == "OSMANI GARCIA" ~ "OSMANI GARCIA LA VOZ",
+      artista == "PLAN B" ~ "PLAN B PR",
+      artista == "YANDAR YOSTIN" ~ "YANDAR", #<4>
+      artista == "CHINO NACHO" ~ "CHINO", 
+      artista == "ZION LENNOX" ~ "ZION", #<4>
+      artista == "CALI" ~ "CALI Y EL DANDEE",
+      artista == "CHERYL COLE" ~ "CHERYL",
+      
+      cancion == "DANZA KUDURO" ~ "LUCENZO", #<5>
+      cancion == "BARBRA STREISAND" ~ "TOM ZEHENDER",
+      cancion == "ELLA NO SIGUE MODAS" ~ "DON OMAR",
+      cancion == "PRAYER IN C ROBIN SCHULZ RADIO EDIT" ~ "LILLY WOOD",
+      cancion == "BONITA" ~ "JOWELL",
+      cancion == "VERTE IR" ~ "ANUEL AA",
+      cancion == "AY HAITI" ~ "ALEJANDRO SANZ",
+      cancion == "VUELVO A VERTE" ~ "MALL", #<5>
+
+      T ~ artista),
+    
+    year = case_when( #<6>
+      cancion == "NOCHE Y DE DIA" ~ 2015,
+      cancion == "COMO TE ATREVES" ~ 2017,
+      T ~ ano) #<6>
+  )
+  
+```
+
+1.  Primero se separa la variable con los artistas. Aunque el separador más común es la "/" en varios casos se usa también "FEAT." o ",".
+2.  Después se normalizan los nombres y títulos.
+3.  El cambio de los nombres que están distintos en ambas bases se hace tras la normalización, para así no tener que gestionar también los símbolos existentes en ellos.
+4.  Algunos dúos de cantantes en el top no aparecen separados como si fuesen más de una persona, pero en Genius sí. Como luego en la base final se emplearán los nombres originales de los cantantes, simplemente se cambia el nombre para dejar solo el primero. *(Estas recodificaciones no han funcionado)*
+5.  En algunas canciones los nombres de los artistas (el primero) no coinciden en las dos bases de datos, por lo que se cambia el de la base del top en función del nombre de la canción.
+6.  Hay dos canciones que en el Genius aparecen como si hubieran salido un año después del que realmente lo hicieron, por lo que para que coincidan se cambia el año antes de hacer la unión de bases.
+
+Ahora repetimos el mismo proceso de **división** con el top, pero en esta ocasión sin guardar las sub-bases:
+
+```{r}
+for(i in years){   
+  
+  df_top <- top %>%     
+    filter(year == i)      
+  
+  assign(paste0("top_", i), df_top) #<1> 
+  
+  rm(df_top)
+}
+```
+
+1.  En este caso, como nos da igual guardarlos al ser la base tan pequeña, simplemente guardamos los nuevos objetos en el environment.
+
+## Unión de las bases de datos
+
+La base de datos posee algunos fallos en los nombres de los artistas o las canciones, especialmente cuanto aparecen caracteres especiales, ya sean acentos o símbolos (p. ej. en lugar de poner Sebastián Yatra pone Sebastin Yatra, borrando la á, o en la canción de Aitana llamada + el título aparece en blanco). Parta tratar de solucionar este problema gracias a algún comando (lo que reduce el número de casos que hay que editar a mano), en lugar de los join normales se ha empleado la librería fuzzyjoin, que permite buscar coincidencias teniendo en cuenta que puede haber alguna letra inexacta entre las categorías de las variables especificadas.
+
+```{r}
+for (i in years) {
+  
+  top_i <- get(paste0("top_", i)) #<1>
+  
+  letras_i <- 
+    read.csv(paste0("C:/Users/Lenovo/Downloads/df_letras_editadas/letras_",i,".csv")) %>%#<1>
+    mutate(across(c(artista, artista2, cancion), ~replace_na(., ""))) #<2>
+  
+  juntos1 <- stringdist_inner_join( #<3>
+    top_i, letras_i,
+    by = c("artista", "cancion"),
+    max_dist = 1) #<3>
+  
+  juntos2 <- stringdist_inner_join( #<4>
+    top_i, letras_i,
+    by = c("artista" = "artista2", "cancion"),
+    max_dist = 1) #<2>
+  
+  juntos_def <- bind_rows(juntos1, juntos2) %>% #<5>
+    distinct(titulo, ano, .keep_all = TRUE) 
+  
+  assign(paste0("juntos_", i), juntos_def)
+  
+  write.csv(juntos_def,
+            file = paste0("C:/Users/Lenovo/Downloads/df_juntos/juntos_", i, ".csv"),
+            row.names = FALSE)
+  
+  rm(letras_i,
+     top_i,
+     juntos1,
+     juntos2,
+     juntos_def)
+}
+```
+
+1.  Se establecen como objetos los data frames de cada año.
+2.  La presencia de NA en la variable de artista2 da problemas con el comando, por lo que estos se sustituyen por espacios en blanco.
+3.  Unión básica, buscando coincidencias entre el título y el cantante principal.
+4.  Segunda unión, para aquellos casos en los que en cada una de las bases el cantante principal sea distinto.
+5.  Se juntan estas dos bases, eliminando los posibles casos que hayan aparecido duplicados por algún motivo.
+
+Tras realizar la unión año a año, se genera la base de datos final con todos los años juntos:
+
+```{r}
+years <- 2010:2020
+
+for(i in years){
+  
+  juntos_def <- 
+    read.csv(paste0("C:/Users/Lenovo/Downloads/df_juntos/juntos_", i, ".csv"))
+  
+  assign(paste0("juntos_", i), juntos_def)
+  
+}
+
+lista_juntos <- mget(ls(pattern = "^juntos_")) #<1>
+
+datos_definitivos <- 
+  
+  bind_rows(lista_juntos) %>%  #<2>
+  
+  select( #<3>
+    cantantes,
+    titulo,
+    letra,
+    genero,
+    idioma,
+    ano,
+    posicion,
+    semanas) %>% #<3>
+  
+  distinct(titulo, ano, .keep_all = T) #<4>
+
+write.csv(datos_definitivos, "top_con_letras.csv") #<5>
+```
+
+1.  Crear una lista con el nombre de todos los objetos del environment que empiezan por "juntos\_".
+2.  Se unen los datos de todos los años en una única base de datos.
+3.  Se seleccionan únicamente las variables de interés.
+4.  Se siguen produciendo algunos casos duplicados a pesar de haberlos intentado eliminar anteriormente, por lo que se eliminan de nuevo antes de guardar la base definitiva.
+5.  Se guarda la base final, que es la que se pasará al ChatGPT para que realice el análisis de texto.
+
+## Resultados
+
+Tasa de éxito inicial del 85%. Una vez unidas las bases de datos, se identificaron manualmente los casos que estaban fallando, y cuyos nombres había que editar a mano (usando un case_when) para que también coincidieran en las dos bases de datos. Para ello utilizamos un anti_join con la base unida y el top original. Los cambios realizados a manos se muestran en el comando de *Limpieza de datos: top*.
+
+En el segundo intento, la tasa de éxito pasa a ser del 96%.
+
+## Comprobar los casos erróneos
+
+```{r}
+datos_definitivos <- read.csv("top_con_letras.csv")
+
+fallos <- anti_join(top_canciones, datos_definitivos,
+           by = c("titulo", "artista" = "cantantes"))
+```

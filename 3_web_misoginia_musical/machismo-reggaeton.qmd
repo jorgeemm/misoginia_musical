@@ -1,0 +1,147 @@
+---
+title: "La (mal) influencia del reggueton"
+format: html
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+**TOCADISCOS KEKO**
+
+Que el reggaetón sea el género más machista del panorama musical
+reciente no resulta sorprendente. Pero ahora los datos permiten ponerle
+una medida concreta a ese fenómeno:
+
+> **Las canciones de reggaeton acarrean 6,32 indicadores machistas,
+> frente a una media global de 4,27.**
+
+Es decir, no solo es el más problemático de todos los géneros, sino que
+se aleja significativamente de la media. Le sigue el hip-hop con 5
+indicadores machistas por tema, lo que también lo sitúa por encima de la
+media. El pop, en cambio, presenta un nivel bastante inferior: 2,89
+indicadores por canción, aunque sin dejar de evidenciar la presencia de
+este tipo de discursos en sus canciones.
+
+> **El caso más peculiar es el de la electrónica: Ni un sólo indicador
+> machista en sus canciones**
+
+La razón principal no parece estar tanto en una intencionalidad
+inclusiva como en la propia naturaleza de estas canciones: suelen
+carecer de letra o contar con muy poca carga narrativa, lo que las deja,
+en muchos casos, fuera del análisis discursivo. Aunque igual que cuando
+no hay letra, no hay violencia, tampoco hay posibilidad de respuesta:
+sus canciones no poseen ni una sóla frase con ambición feminista.
+
+Profundizando en estos indicadores feministas, vemos cómo la tendencia
+se invierte: la media global se reduce a apenas 0,5 indicadores por
+canción, revelando la fragilidad del discurso emancipador en las letras
+populares. Aquí, podemos apreciar cómo el hip-hop representa la
+antítesis al caso de la electrónica, pues con una media de 1,75
+indicadores por canción destaca como el género más feminista. Esto
+refuerza la idea de que las letras más densas y discursivas son capaces
+tanto de replicar el machismo como de confrontarlo. Con respecto al
+reggaeton, al igual que en el tocadiscos morado, volvemos a observar un
+mismo patrón:
+
+> **El reggaetón, con tan apenas un indicador feminista cada 5
+> canciones, no solo está imponiendo una narrativa, sino que también
+> silencia cualquier otra.**
+
+En resumen, el gráfico deja claro algo que ya intuíamos pero ahora
+podemos afirmar con números: el reggaetón no solo ha cambiado el ritmo
+de nuestras playlists, también ha amplificado discursos machistas con
+una contundencia alarmante.
+
+<br><br>
+
+<br><br>
+
+<!-- BOTONES Y AUDIO -->
+
+::: {style="display: flex; justify-content: space-between; align-items: center; margin-top: 3rem; font-size: 1.1em;"}
+<!-- Enlace anterior -->
+
+<a href="cantantes-mas-machistas.qmd" style="color: #C674FF; text-decoration: none;">
+<i class="fa-solid fa-backward-step" style="margin-right: 8px;"></i>
+¿Quiénes son más machistas?</a>
+
+<!-- Botón central: play/pause -->
+
+<a href="#" id="play-pause-button" style="color: #C674FF; text-decoration: none;">
+<i id="play-icon" class="fa-solid fa-play" style="font-size: 2em;"></i>
+</a>
+
+<!-- Enlace siguiente -->
+
+<a href="popularidad-generos-musicales.qmd" style="color: #C674FF; text-decoration: none;">
+La muerte del pop
+<i class="fa-solid fa-forward-step" style="margin-left: 8px;"></i> </a>
+:::
+
+<!-- AUDIO INVISIBLE -->
+
+<audio id="music-player" style="display:none;">
+
+</audio>
+
+```{=html}
+<script>
+  const audioFiles = [
+    "audio/audio1.mp3",
+    "audio/audio2.mp3",
+    "audio/audio3.mp3",
+    "audio/audio4.mp3",
+    "audio/audio5.mp3",
+    "audio/audio6.mp3",
+    "audio/audio7.mp3",
+    "audio/audio8.mp3"
+  ];
+
+  let currentAudio = new Audio();
+  let lastIndex = -1; // Para recordar el índice anterior
+  const playIcon = document.getElementById("play-icon");
+  const playButton = document.getElementById("play-pause-button");
+
+  // Función para obtener un índice diferente al anterior
+  function getNewRandomIndex() {
+    let newIndex;
+    do {
+      newIndex = Math.floor(Math.random() * audioFiles.length);
+    } while (newIndex === lastIndex && audioFiles.length > 1);
+    lastIndex = newIndex;
+    return newIndex;
+  }
+
+  // Función para cargar y reproducir nuevo audio
+  function playRandomAudio() {
+    const newIndex = getNewRandomIndex();
+    currentAudio.src = audioFiles[newIndex];
+    currentAudio.play();
+  }
+
+  // Evento para cuando se acaba una pista
+  currentAudio.addEventListener("ended", () => {
+    playRandomAudio();
+  });
+
+  // Control del botón play/pause
+  playButton.addEventListener("click", function (e) {
+    e.preventDefault();
+
+    if (currentAudio.paused || currentAudio.ended) {
+      playIcon.classList.remove("fa-play");
+      playIcon.classList.add("fa-pause");
+      // Si el audio no tiene src todavía o ha terminado
+      if (!currentAudio.src || currentAudio.ended) {
+        playRandomAudio();
+      } else {
+        currentAudio.play();
+      }
+    } else {
+      currentAudio.pause();
+      playIcon.classList.remove("fa-pause");
+      playIcon.classList.add("fa-play");
+    }
+  });
+</script>
+```

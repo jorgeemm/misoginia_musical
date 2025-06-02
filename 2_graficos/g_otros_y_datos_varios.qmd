@@ -1,0 +1,88 @@
+---
+title: "Otras ediciones"
+format: html
+editor: visual
+---
+
+## Librerías y datos
+
+```{r}
+#| message: false
+#| warning: false
+
+library(tidyverse)
+
+datos <- read.csv("../0_bases_datos/indicadores_finales_top_10_2010_2020.csv")
+```
+
+## Gráfico predominancia de cada género musical
+
+### Ver cuántas veces se repite cada género musical
+
+```{r}
+# Contar cuántas veces se repite cada género musical
+conteo_genero <- datos %>%
+  group_by(genero_agrupado) %>%
+  summarise(n = n())
+```
+
+### Gráfico final
+
+Al no necesitar para este gráfico el análisis de las letras, se ha empleado una base de datos distinta que contiene únicamente los géneros musicales, para así poder aumentar la representatividad y fiabilidad del gráfico.
+
+```{r}
+# Seleccionar en el top 10 las variables de interés
+top_10 <- datos %>% 
+  select(ano, genero_agrupado)
+
+# Se abre el df con el resto de canciones hasta tener 25 por año
+top_11_25 <- read_xlsx("../0_bases_datos/generos_musicales_11-25.xlsx") %>% 
+  select(ano, genero_agrupado = genero_de_la_cancion)
+
+# Se unen ambas bases de datos
+top_25 <- bind_rows(top_10, top_11_25) %>% 
+  mutate(genero_agrupado = str_to_lower(genero_agrupado))
+
+# Se saca la tabla con los % de cada género en cada año, 
+# que posteriormente se usará en Datawrapper.
+table(top_25$genero_agrupado, top_25$ano) %>% 
+  prop.table(2) %>% 
+  round(4) * 100
+```
+
+## Información general machismo en música
+
+```{r}
+# Porcentaje de canciones machistas
+datos %>% 
+  filter(indicadores_totales != 0)
+
+84/110*100
+
+# Porcentaje de canciones de hombres
+datos %>% 
+  filter(genero_del_cantante == 1)
+77/1.1
+
+datos %>% 
+  filter(genero_del_cantante == 2)
+16/1.1
+
+# Letras con cosificación
+datos %>% 
+  filter(i_a1 != 0)
+```
+
+```{r}
+# Indicadores machistas medios según el género del cantante
+datos %>% 
+  group_by(genero_del_cantante) %>%
+  summarise(media_machismo = mean(indicadores_totales))
+
+# Total de indicadores machistas por género del cantante
+datos %>% 
+  group_by(genero_del_cantante) %>%
+  summarise(indicadores_por_genero = sum(indicadores_totales))
+
+37/47*100
+```
