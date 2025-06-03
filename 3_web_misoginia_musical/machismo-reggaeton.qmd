@@ -6,7 +6,13 @@ editor:
     wrap: 72
 ---
 
-**TOCADISCOS KEKO**
+![](img/tocadiscos1.jpg)
+
+![](img/tocadiscos1.jpg)
+
+![](img/tocadiscos2.jpg)
+
+![](img/tocadiscos2.jpg)
 
 Que el reggaetón sea el género más machista del panorama musical
 reciente no resulta sorprendente. Pero ahora los datos permiten ponerle
